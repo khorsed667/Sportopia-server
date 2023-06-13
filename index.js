@@ -33,8 +33,22 @@ async function run() {
     await client.connect();
 
     // all collections
+    const userCollections = client.db("Sportofia").collection("users");
     const classCollections = client.db("Sportofia").collection("classes");
     const cartCollections = client.db("Sportofia").collection("carts");
+
+    app.post('/user', async(req, res) =>{
+        const user = req.body;
+        console.log(user);
+        const query = {email : user.email};
+        const savedUser = await userCollections.findOne(query);
+        console.log(savedUser);
+        if(savedUser){
+            return res.send({message : 'user already exist'})
+        }
+        const result = await userCollections.insertOne(user);
+        res.send(result);
+    })
 
 
     app.get('/class', async(req, res) =>{
