@@ -50,6 +50,35 @@ async function run() {
         res.send(result);
     })
 
+    app.get('/user', async(req, res)=>{
+        const result = await userCollections.find().toArray();
+        res.send(result);
+    })
+
+    app.patch('/user/admin/:id', async(req, res)=>{
+        const id = req.params.id;
+        const query = {_id: new ObjectId(id)};
+        const updetRole = {
+            $set: {
+                role:'admin'
+            },
+        };
+        const result = await userCollections.updateOne(query, updetRole);
+        res.send(result);
+    })
+
+
+    app.patch('/user/instractor/:id', async(req, res)=>{
+        const id = req.params.id;
+        const query = {_id: new ObjectId(id)};
+        const updetRole = {
+            $set: {
+                role:'instractor'
+            },
+        };
+        const result = await userCollections.updateOne(query, updetRole);
+        res.send(result);
+    })
 
     app.get('/class', async(req, res) =>{
         const result = await classCollections.find().toArray();
